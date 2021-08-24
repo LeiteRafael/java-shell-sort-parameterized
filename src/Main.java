@@ -21,30 +21,25 @@ public class Main {
         String saida1 = "src/files/saida1.txt";
         String saida2 = "src/files/saida2.txt";
         // Method to part1
-        exec(listOfSequences, entrada1, saida1, 1);
+        exec(listOfSequences, entrada1, saida1, true);
         // Method to part2
-        exec(listOfSequences, entrada2, saida2, 2);
+        exec(listOfSequences, entrada2, saida2, false);
 
     }
 
-    private static void exec(List<Sequence> listOfSequences, String fileImput, String fileOutput, int option)
+    private static void exec(List<Sequence> listOfSequences, String fileInput, String fileOutput, boolean option)
             throws IOException {
         StringBuilder stringBuilder = new StringBuilder();
         var fileManager = new FileManager();
-        fileManager.readFileOf(fileImput);
+        fileManager.readFileOf(fileInput);
         var listOfRows = fileManager.getListOfRows();
 
         for (List<Integer> row : listOfRows) {
 
             for (Sequence sequence : listOfSequences) {
                 var shellSort = new ShellSort(sequence, row.stream().mapToInt(i -> i).toArray());
-                if (option == 1) {
-                    shellSort.sort(true);
-                    stringBuilder.append(String.join("\n", shellSort.getSequenceSorted()));
-                } else {
-                    shellSort.sort(false);
-                    stringBuilder.append(shellSort.getTimeExec());
-                }
+                shellSort.sort(option);
+                stringBuilder.append(option ? String.join("\n", shellSort.getSequenceSorted()) : shellSort.getTimeExec());
                 stringBuilder.append("\n");
             }
             fileManager.writeStringInFile(fileOutput, stringBuilder.toString());
