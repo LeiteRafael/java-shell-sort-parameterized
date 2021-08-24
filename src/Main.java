@@ -39,10 +39,11 @@ public class Main {
             for (Sequence sequence : listOfSequences) {
                 var shellSort = new ShellSort(sequence, row.stream().mapToInt(i -> i).toArray());
                 if (option == 1) {
-                    shellSort.sort();
+                    shellSort.sort(true);
                     stringBuilder.append(String.join("\n", shellSort.getSequenceSorted()));
                 } else {
-                    stringBuilder.append(shellSort.sortedWithTime());
+                    shellSort.sort(false);
+                    stringBuilder.append(shellSort.getTimeExec());
                 }
                 stringBuilder.append("\n");
             }
