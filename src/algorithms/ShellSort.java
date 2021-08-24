@@ -1,9 +1,9 @@
 package algorithms;
 
-import sequences.Sequence;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import sequences.Sequence;
 
 public class ShellSort {
 
@@ -40,6 +40,33 @@ public class ShellSort {
             h = (index < 0) ? 0 : sequence.getValueOfIndex(index);
         }
     }
+
+    public String sortedWithTime() {
+        long start = System.nanoTime();
+        int n = arr.length;
+        int h = sequence.getNumberLessThan(n);
+
+        int c, j, index;
+        index = sequence.getSequence().size() - 1;
+        while (h > 0) {
+            for (int i = h; i < n; i++) {
+                c = this.arr[i];
+                j = i;
+                while (j >= h && arr[j - h] > c) {
+                    this.arr[j] = this.arr[j - h];
+                    j = j - h;
+                }
+                this.arr[j] = c;
+            }
+            index--;
+
+            h = (index < 0) ? 0 : sequence.getValueOfIndex(index);
+        }
+        long end = System.nanoTime();
+        double time = (double) (end - start) / 1_000_000_000;
+        return sequence.getName() + "," + (n - 1) + "," + time;
+    }
+
 
     public String arrayToString(int[] arr) {
         var resp = "";
