@@ -1,5 +1,7 @@
 # java-shell-sort-parameterized
 
+[How to work Shellsort](https://en.wikipedia.org/wiki/Shellsort)
+
 This project show how to work a shell sort algorithm and how a sequence can impact in performance.
 
 ## Sequences implemented:
