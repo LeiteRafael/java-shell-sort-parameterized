@@ -7,50 +7,58 @@ import java.util.List;
 
 public class ShellSort {
 
-    int[] arr;
-    Sequence sequence;
-    List<String> sequenceSorted = new ArrayList<String>();
-    String timeExec;
+    private final int[] unorderedNumbers;
+    private final Sequence sequence;
+    private List<String> sequenceSorted = new ArrayList<String>();
+    private String timeExec;
 
-    public String getTimeExec() {
-        return timeExec;
-    }
-
-    public ShellSort(Sequence sequence, int[] arr) {
-        this.arr = arr;
+    public ShellSort(Sequence sequence, int[] unorderedNumbers) {
+        this.unorderedNumbers = unorderedNumbers;
         this.sequence = sequence;
     }
 
     public void sort(boolean stepByStep) {
         long start = System.nanoTime();
-        if (stepByStep) mountResp(arrayToString(arr) + " SEQ=" + sequence.getName());
+        if (stepByStep) mountResponse(arrayToString(unorderedNumbers) + " SEQ=" + sequence.getName());
 
-        int n = arr.length;
-        int h = sequence.getNumberLessThan(n);
+        int length = unorderedNumbers.length;
+        int sequenceNumber = sequence.getNumberLessThan(length);
+        int index = sequence.getSequence().size() - 1;
+        int change;
+        int j;
+        int trocas =0 ;
 
-        int c, j, index;
-        index = sequence.getSequence().size() - 1;
-        while (h > 0) {
-            for (int i = h; i < n; i++) {
-                c = this.arr[i];
+        while (sequenceNumber > 0) {
+            for (int i = sequenceNumber; i < length; i++) {
+
+                change = this.unorderedNumbers[i];
                 j = i;
-                while (j >= h && arr[j - h] > c) {
-                    this.arr[j] = this.arr[j - h];
-                    j = j - h;
+                while (j >= sequenceNumber && unorderedNumbers[j - sequenceNumber] > change) {
+                    this.unorderedNumbers[j] = this.unorderedNumbers[j - sequenceNumber];
+                    trocas++;
+                    j = j - sequenceNumber;
                 }
-                this.arr[j] = c;
+                this.unorderedNumbers[j] = change;
             }
-            if (stepByStep) mountResp(arrayToString(arr) + " INCR=" + h);
+            if (stepByStep) mountResponse(arrayToString(unorderedNumbers) + " INCR=" + sequenceNumber);
             index--;
-            h = (index < 0) ? 0 : sequence.getValueOfIndex(index);
+            sequenceNumber = (index < 0) ? 0 : sequence.getValueOfIndex(index);
         }
         long end = System.nanoTime();
         double time = (double) (end - start) / 1_000_000_000;
-        this.timeExec = sequence.getName() + "," + (n - 1) + "," + time;
+        this.timeExec = sequence.getName() + "," + (length - 1) + "," + time;
+        System.out.println("trocas: "+trocas);
     }
 
+    public String getTimeExec() {
+        return timeExec;
+    }
 
-    public String arrayToString(int[] arr) {
+    public List<String> getSequenceSorted() {
+        return this.sequenceSorted;
+    }
+
+    private String arrayToString(int[] arr) {
         var resp = "";
         for (int value : arr) {
             resp = resp.isEmpty() ? resp + "" + value : resp + "," + value;
@@ -58,11 +66,8 @@ public class ShellSort {
         return resp;
     }
 
-    public void mountResp(String row) {
+    private void mountResponse(String row) {
         this.sequenceSorted.add(row);
     }
 
-    public List<String> getSequenceSorted() {
-        return this.sequenceSorted;
-    }
 }
