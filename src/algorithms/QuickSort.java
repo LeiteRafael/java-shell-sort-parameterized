@@ -27,22 +27,22 @@ public class QuickSort {
     }
 
     static int partitionLomuto(int[] arr, int low, int high) {
-        int pivotPosition = option ?  median(arr) : generateRandon(arr.length);
-        int pivot = arr[pivotPosition];
+        int pivotPosition = option ?  median(arr, low, high) : generateRandon(arr.length);
+        int pivot = arr[high];
 
-        int i = (low - 1);
+        int i = (low);
         for (int j = low; j <= high - 1; j++) {
-            if (arr[j] <= pivot) {
-                i++;
+            if (arr[j] < pivot) {
                 Swap(arr, i, j);
+                i++;
             }
         }
-        Swap(arr, i + 1, high);
-        return (i + 1);
+        Swap(arr, i, high);
+        return (i);
     }
 
     static int partitionHoare(int[] arr, int low, int high) {
-        int pivotPosition = option ?  median(arr) : generateRandon(arr.length);
+        int pivotPosition = option ?  median(arr, low, high) : generateRandon(arr.length);
         int pivot = arr[pivotPosition];
 
         int i = low-1, j = high + 1;
@@ -88,12 +88,17 @@ public class QuickSort {
         this.timeExec = "qualquer coisa" + time;
     }
 
-    private static int median(int[] arr) {
-        int n = arr.length;
-        int averageValue = n % 2 == 0 ? (n - 1) / 2 : n / 2;
-        int[] arrayAux = {arr[0], arr[n - 1], arr[averageValue]};
-        Arrays.sort(arrayAux);
-        return arrayAux[arrayAux.length / 2];
+    private static int median(int[] arr, int low, int high) {
+        int averageValue = (low + high) % 2 == 0 ? ((low + high) - 1) / 2 : (low + high) / 2;
+
+        if (arr[averageValue] > arr[low])
+            Swap(arr, averageValue, low);
+        if (arr[high] > arr[low])
+            Swap(arr, high, low);
+        if (arr[averageValue] > arr[high])
+            Swap(arr, averageValue, high);
+
+        return averageValue;
     }
 
     private static int generateRandon(int size){
