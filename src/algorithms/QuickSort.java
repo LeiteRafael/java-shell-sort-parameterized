@@ -29,7 +29,6 @@ public class QuickSort {
     static int partitionLomuto(int[] arr, int low, int high) {
         int pivotPosition = option ?  median(arr) : generateRandon(arr.length);
         int pivot = arr[pivotPosition];
-        Swap(arr, pivotPosition, low);
 
         int i = (low - 1);
         for (int j = low; j <= high - 1; j++) {
