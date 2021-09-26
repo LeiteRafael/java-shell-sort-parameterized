@@ -27,7 +27,10 @@ public class QuickSort {
     }
 
     static int partitionLomuto(int[] arr, int low, int high) {
-        int pivot = option ?  median(arr) : arr[generateRandon(arr.length)];
+        int pivotPosition = option ?  median(arr) : generateRandon(arr.length);
+        int pivot = arr[pivotPosition];
+        Swap(arr, pivotPosition, low);
+
         int i = (low - 1);
         for (int j = low; j <= high - 1; j++) {
             if (arr[j] <= pivot) {
@@ -40,8 +43,10 @@ public class QuickSort {
     }
 
     static int partitionHoare(int[] arr, int low, int high) {
-        int pivot = option ?  median(arr) : arr[generateRandon(arr.length)];
-        int i = low - 1, j = high + 1;
+        int pivotPosition = option ?  median(arr) : generateRandon(arr.length);
+        int pivot = arr[pivotPosition];
+
+        int i = low-1, j = high + 1;
 
         while (true) {
             do {
@@ -54,9 +59,9 @@ public class QuickSort {
 
             if (i >= j)
                 return j;
-            int temp = arr[i];
-            arr[i] = arr[j];
-            arr[j] = temp;
+
+            Swap(arr, i, j);
+
         }
     }
 
